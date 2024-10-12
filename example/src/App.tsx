@@ -6,6 +6,7 @@ import {
   WorkerPolicy,
   cancel,
 } from 'react-native-background-sync';
+
 import BackgroundCall from './task-manager';
 
 export default function App() {

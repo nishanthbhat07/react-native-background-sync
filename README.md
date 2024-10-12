@@ -1,6 +1,6 @@
 # react-native-background-sync
 
-Perform background data syncs in Android using Android's WorkManager
+A React Native library for performing background data syncs in Android using Android's WorkManager.
 
 ## Installation
 
@@ -8,17 +8,148 @@ Perform background data syncs in Android using Android's WorkManager
 npm install react-native-background-sync
 ```
 
-## Usage
+or
 
-
-```js
-import { multiply } from 'react-native-background-sync';
-
-// ...
-
-const result = await multiply(3, 7);
+```sh
+yarn add react-native-background-sync
 ```
 
+## Supported Platforms
+Currently, this library only supports Android.
+
+## Usage
+First, import the necessary functions and types from the library:
+
+```ts
+import { schedule, cancel, disableAppIgnoringBatteryOptimization, SchedulerTypes, WorkerPolicy, TimeUnits } from 'react-native-background-sync';
+import type { BackgroundSchedulerParams } from 'react-native-background-sync';
+```
+
+### Scheduling a Background Task
+To schedule a background task, use the schedule function:
+
+```ts
+// ...
+const params: BackgroundSchedulerParams = {
+  taskKey: 'uniqueTaskKey',
+  // Add other required parameters
+};
+
+const callback = async () => {
+  // Your background task logic here
+};
+
+try {
+  const isScheduled = await schedule(params, callback);
+  if (isScheduled) {
+    console.log('Background task scheduled successfully');
+  } else {
+    console.log('Failed to schedule background task');
+  }
+} catch (error) {
+  console.error('Error scheduling background task:', error);
+}
+```
+
+### Canceling a Background Task 
+To cancel a scheduled background task, use the cancel function:
+```ts
+try {
+  const isCanceled = await cancel('uniqueTaskKey');
+  if (isCanceled) {
+    console.log('Background task canceled successfully');
+  } else {
+    console.log('Failed to cancel background task');
+  }
+} catch (error) {
+  console.error('Error canceling background task:', error);
+}
+```
+
+### Disabling Battery Optimization
+To disable battery optimization for your app, which may be necessary for reliable background task execution, use the disableAppIgnoringBatteryOptimization function:
+
+```ts
+try {
+  const isDisabled = disableAppIgnoringBatteryOptimization();
+  if (isDisabled) {
+    console.log('Battery optimization disabled successfully');
+  } else {
+    console.log('Failed to disable battery optimization');
+  }
+} catch (error) {
+  console.error('Error disabling battery optimization:', error);
+}
+```
+
+## API Reference
+
+### Enums 
+The library provides several enums for configuring background tasks:
+
+```ts
+enum SchedulerTypes {
+periodic = 'PERIODIC',
+oneTime = 'ONE_TIME',
+}
+```
+
+```ts
+enum WorkerPolicy {
+KEEP = 'KEEP',
+REPLACE = 'REPLACE',
+UPDATE = 'UPDATE',
+}
+```
+
+```ts
+enum TimeUnits {
+HOUR = 'HOUR',
+DAY = 'DAY',
+SECOND = 'SECOND',
+MINUTES = 'MINUTES',
+}
+```
+
+### Functions
+
+1. `schedule(params: BackgroundSchedulerParams, callback: Task): Promise<boolean>`
+   
+   Schedules a background task with the given parameters and callback function.
+
+2. `cancel(taskKey: string): Promise<boolean>`
+   
+   Cancels a scheduled background task with the specified task key.
+
+3. `disableAppIgnoringBatteryOptimization(): boolean`
+   
+   Attempts to disable battery optimization for the app to ensure reliable background task execution.
+
+## Types
+The BackgroundSchedulerParams type is used to configure the background task. Refer to the library's type definitions for the exact structure and available options.
+```ts
+export interface BackgroundSchedulerParams {
+  taskKey: string;
+  type: SchedulerTypes;
+  maxRetryAttempts?: number;
+  retryDelay?: number;
+  taskTimeout?: number;
+  allowedInForeground?: boolean;
+  syncInterval?: number;
+  syncIntervalType?: TimeUnits;
+  syncFlexTime?: number;
+  syncFlexTimeType?: TimeUnits;
+  workerPolicy?: WorkerPolicy;
+}
+
+```
+
+## Error Handling
+All functions in this library throw errors if something goes wrong during execution. It's recommended to wrap calls to these functions in try-catch blocks for proper error handling.
+
+## Platform Specific Notes
+- This library currently only supports Android. Calls to these functions on unsupported platforms (like iOS) will return `false` or do nothing.
+- Make sure you have the necessary Android permissions and configurations set up in your project for background tasks to work properly.
 
 ## Contributing
 

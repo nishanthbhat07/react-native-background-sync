@@ -1,5 +1,5 @@
 import { AppRegistry, NativeModules, Platform, type Task } from 'react-native';
-import type { BackgroundSchedulerParams } from './types';
+import type { BackgroundSchedulerParams as IParams } from './types';
 
 const LINKING_ERROR =
   `The package 'react-native-background-sync' doesn't seem to be linked. Make sure: \n\n` +
@@ -41,7 +41,7 @@ const SupportedPlatforms = ['android'];
 const isSupported = () => SupportedPlatforms.includes(Platform.OS);
 
 export const schedule = async (
-  params: BackgroundSchedulerParams,
+  params: IParams,
   callback: Task
 ): Promise<boolean> => {
   if (!isSupported()) {
@@ -82,3 +82,5 @@ export const disableAppIgnoringBatteryOptimization = (): boolean => {
   }
   return true;
 };
+
+export type BackgroundSchedulerParams = IParams;
