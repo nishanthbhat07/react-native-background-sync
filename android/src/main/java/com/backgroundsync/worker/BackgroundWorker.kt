@@ -1,6 +1,7 @@
 package com.backgroundsync.worker
 
 import android.content.Context
+import android.util.Log
 import androidx.work.Data
 import androidx.work.WorkerParameters
 import com.facebook.react.bridge.Arguments
@@ -11,9 +12,10 @@ import com.facebook.react.jstasks.LinearCountingRetryPolicy
 class BackgroundSyncWorker(context: Context, workerParams: WorkerParameters) :
   HeadlessWorker(context, workerParams) {
   override fun getTaskConfig(data: Data?): HeadlessJsTaskConfig? {
+    Log.d("TAG", "getTaskConfig: $data")
     val taskKey= data?.getString("taskKey")
     val maxRetryAttempts = data?.getInt("maxRetryAttempts", 3)
-    val retryDelay = data?.getLong("retryDelay", 4000L)
+    val retryDelay = data?.getInt("retryDelay", 4000)
     val taskTimeout = data?.getLong("taskTimeout", 10000L)
     val allowedInForeground = data?.getBoolean("allowedInForeground", true)
 

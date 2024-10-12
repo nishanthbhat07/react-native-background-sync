@@ -1,9 +1,4 @@
-import {
-  AppRegistry,
-  NativeModules,
-  Platform,
-  type TaskProvider,
-} from 'react-native';
+import { AppRegistry, NativeModules, Platform, type Task } from 'react-native';
 import type { BackgroundSchedulerParams } from './types';
 
 const LINKING_ERROR =
@@ -47,7 +42,7 @@ const isSupported = () => SupportedPlatforms.includes(Platform.OS);
 
 export const schedule = async (
   params: BackgroundSchedulerParams,
-  callback: TaskProvider
+  callback: Task
 ): Promise<boolean> => {
   if (!isSupported()) {
     return false;
@@ -56,7 +51,7 @@ export const schedule = async (
   try {
     const response = await BackgroundSync.schedule(params);
     if (response) {
-      AppRegistry.registerHeadlessTask(taskKey, callback);
+      AppRegistry.registerHeadlessTask(taskKey, () => callback);
     }
     return response;
   } catch (e) {

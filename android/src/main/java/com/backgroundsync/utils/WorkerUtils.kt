@@ -36,13 +36,15 @@ fun convertWorkerPolicy(type: String?): ExistingPeriodicWorkPolicy {
 
 
 fun generateHeadlessConfig(params: ReadableMap): Data {
-  return  Data.Builder()
-    .putInt("maxRetryAttempts", params.getInt("maxRetryAttempts"))
-    .putLong("retryDelay", params.getDouble("retryDelay").toLong())
-    .putLong("taskTimeout", params.getDouble("taskTimeout").toLong())
-    .putBoolean("allowedInForeground", params.getBoolean("allowedInForeground"))
+  val config = Data.Builder()
     .putString("taskKey", params.getString("taskKey"))
-    .build()
+
+  if(params.hasKey("maxRetryAttempts")) config.putInt("maxRetryAttempts", params.getInt("maxRetryAttempts"))
+  if(params.hasKey("retryDelay")) config.putInt("retryDelay", params.getDouble("retryDelay").toInt())
+  if(params.hasKey("taskTimeout")) config.putLong("taskTimeout", params.getDouble("taskTimeout").toLong())
+  if(params.hasKey("allowedInForeground")) config.putBoolean("allowedInForeground", params.getBoolean("allowedInForeground"))
+
+  return config.build()
 }
 
 fun isWorkScheduled(workManager: WorkManager?,tag: String?): Boolean {

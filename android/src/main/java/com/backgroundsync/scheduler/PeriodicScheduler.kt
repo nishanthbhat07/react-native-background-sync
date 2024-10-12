@@ -18,9 +18,9 @@ class PeriodicScheduler(private val workManager: WorkManager?) {
      .setRequiredNetworkType(NetworkType.CONNECTED)
      .build()
 
-   val syncInterval=params.getInt("syncInterval")
+   val syncInterval=params.getInt("syncInterval").toLong()
    val syncIntervalType=params.getString("syncIntervalType")
-   val syncFlexTime=params.getInt("syncFlexTime")
+   val syncFlexTime=params.getInt("syncFlexTime").toLong()
    val syncFlexTimeType=params.getString("syncFlexTimeType")
    val taskKey=params.getString("taskKey")
    val workerPolicy=params.getString("workerPolicy")
@@ -29,9 +29,9 @@ class PeriodicScheduler(private val workManager: WorkManager?) {
 
    val periodicWorkRequest = PeriodicWorkRequest.Builder(
      BackgroundSyncWorker::class.java,
-     syncInterval as Long,
+     syncInterval,
      convertToTimeUnit(syncIntervalType),
-     syncFlexTime as Long,
+     syncFlexTime,
      convertToTimeUnit(syncFlexTimeType)
    ).setConstraints(constraints).setInputData(headlessConfig).addTag(taskKey as String).build()
 
