@@ -1,17 +1,17 @@
-# @rn-native-utils/background-sync
+# @rn-native-utils/workmanager
 
 A React Native library for performing background data syncs in Android using Android's WorkManager.
 
 ## Installation
 
 ```sh
-npm install @rn-native-utils/background-sync
+npm install @rn-native-utils/workmanager
 ```
 
 or
 
 ```sh
-yarn add @rn-native-utils/background-sync
+yarn add @rn-native-utils/workmanager
 ```
 
 ## Supported Platforms
@@ -21,8 +21,8 @@ Currently, this library only supports Android.
 First, import the necessary functions and types from the library:
 
 ```ts
-import { schedule, cancel, disableAppIgnoringBatteryOptimization, SchedulerTypes, WorkerPolicy, TimeUnits } from 'react-native-background-sync';
-import type { BackgroundSchedulerParams } from 'react-native-background-sync';
+import { schedule, cancel, disableAppIgnoringBatteryOptimization, SchedulerTypes, WorkerPolicy, TimeUnits } from '@rn-native-utils/workmanager';
+import type { BackgroundSchedulerParams } from '@rn-native-utils/workmanager';
 ```
 
 ### Scheduling a Background Task
