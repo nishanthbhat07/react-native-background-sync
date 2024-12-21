@@ -5,7 +5,7 @@ import {
   TimeUnits,
   WorkerPolicy,
   cancel,
-} from 'react-native-background-sync';
+} from '@rn-native-utils/workmanager';
 
 import BackgroundCall from './task-manager';
 
@@ -14,11 +14,23 @@ export default function App() {
     const params = {
       taskKey: 'Onetime',
       type: SchedulerTypes.oneTime,
+      extras: {
+        hello: 'Hi',
+        user: 'John',
+        id: 123,
+        data: {
+          city: 'Pune',
+        },
+      },
     };
-    const result = await schedule(params, async () => {
-      BackgroundCall(params.taskKey);
-    });
-    console.log('Result:', result);
+    try {
+      const result = await schedule(params, async (data) =>
+        BackgroundCall(data)
+      );
+      console.log('Result:', result);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const schedulePeriodic = async () => {
@@ -30,16 +42,28 @@ export default function App() {
       syncFlexTime: 5,
       syncFlexTimeType: TimeUnits.MINUTES,
       workerPolicy: WorkerPolicy.KEEP,
+      extras: {
+        hello: 'Hi',
+        user: 'John',
+        id: 123,
+        data: {
+          city: 'Pune',
+        },
+      },
     };
-    const result = await schedule(params, async () => {
-      BackgroundCall(params.taskKey);
+    const result = await schedule(params, async (data: any) => {
+      BackgroundCall(data);
     });
     console.log('Result:', result);
   };
 
   const cancelTask = async (taskKey: string) => {
-    const response = await cancel(taskKey);
-    Alert.alert(`Cancelled task for ${taskKey} : ${response}`);
+    try {
+      const response = await cancel(taskKey);
+      Alert.alert(`Cancelled task for ${taskKey} : ${response}`);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

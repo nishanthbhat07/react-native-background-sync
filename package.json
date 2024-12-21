@@ -1,5 +1,5 @@
 {
-  "name": "react-native-background-sync",
+  "name": "@rn-native-utils/workmanager",
   "version": "0.1.0",
   "description": "Perform background data syncs in Android using Android's WorkManager",
   "source": "./src/index.tsx",
@@ -18,12 +18,9 @@
     }
   },
   "files": [
-    "src",
     "lib",
     "android",
-    "ios",
     "cpp",
-    "*.podspec",
     "!ios/build",
     "!android/build",
     "!android/gradle",

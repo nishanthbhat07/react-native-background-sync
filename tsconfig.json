@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-background-sync": ["./src/index"]
+      "@rn-native-utils/workmanager": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

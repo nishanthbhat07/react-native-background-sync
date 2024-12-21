@@ -16,6 +16,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.ReadableType
 
 
 class BackgroundSyncModule(reactContext: ReactApplicationContext) :
@@ -86,7 +87,7 @@ class BackgroundSyncModule(reactContext: ReactApplicationContext) :
       if (isWorkCancelled(workManager,taskKey)) {
         promise.resolve(true)
       } else {
-        promise.reject(false as String)
+        promise.reject("CANCELLATION_ERROR", "Could not cancel task: $taskKey")
       }
     }
     catch (e:Exception){

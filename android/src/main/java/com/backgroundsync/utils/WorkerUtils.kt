@@ -1,10 +1,12 @@
 package com.backgroundsync.utils
 
+import android.util.Log
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.ReadableType
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
@@ -38,6 +40,38 @@ fun convertWorkerPolicy(type: String?): ExistingPeriodicWorkPolicy {
 fun generateHeadlessConfig(params: ReadableMap): Data {
   val config = Data.Builder()
     .putString("taskKey", params.getString("taskKey"))
+
+  val extras = params.getMap("extras")
+  extras?.let {
+    val iterator = it.keySetIterator()
+    while (iterator.hasNextKey()) {
+      val key = iterator.nextKey()
+      Log.d("TAG", "generateHeadlessConfig: $key")
+      when (it.getType(key)) {
+        ReadableType.String -> config.putString(key, it.getString(key))
+        ReadableType.Number -> config.putDouble(key, it.getDouble(key))
+        ReadableType.Boolean -> config.putBoolean(key, it.getBoolean(key))
+        ReadableType.Null -> config.putString(key, null)
+        ReadableType.Map -> {
+          val nestedMap = it.getMap(key)?.toHashMap()
+          nestedMap?.let { map ->
+            config.putAll(map.mapKeys { "${key}_${it.key}" })
+          }
+        }
+        ReadableType.Array -> {
+          val array = it.getArray(key)?.toArrayList()
+          array?.forEachIndexed { index, value ->
+            when (value) {
+              is String -> config.putString("${key}_$index", value)
+              is Number -> config.putDouble("${key}_$index", value.toDouble())
+              is Boolean -> config.putBoolean("${key}_$index", value)
+            }
+          }
+        }
+      }
+    }
+  }
+
 
   if(params.hasKey("maxRetryAttempts")) config.putInt("maxRetryAttempts", params.getInt("maxRetryAttempts"))
   if(params.hasKey("retryDelay")) config.putInt("retryDelay", params.getDouble("retryDelay").toInt())

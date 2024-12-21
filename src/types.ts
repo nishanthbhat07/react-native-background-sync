@@ -2,7 +2,7 @@ import type {
   SchedulerTypes,
   TimeUnits,
   WorkerPolicy,
-} from 'react-native-background-sync';
+} from '@rn-native-utils/workmanager';
 
 export interface BackgroundSchedulerParams {
   taskKey: string;
@@ -16,4 +16,5 @@ export interface BackgroundSchedulerParams {
   syncFlexTime?: number;
   syncFlexTimeType?: TimeUnits;
   workerPolicy?: WorkerPolicy;
+  extras: Record<string, unknown>;
 }

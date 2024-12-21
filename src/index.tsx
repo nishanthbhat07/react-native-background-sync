@@ -1,8 +1,8 @@
-import { AppRegistry, NativeModules, Platform, type Task } from 'react-native';
+import { AppRegistry, NativeModules, Platform } from 'react-native';
 import type { BackgroundSchedulerParams as IParams } from './types';
 
 const LINKING_ERROR =
-  `The package 'react-native-background-sync' doesn't seem to be linked. Make sure: \n\n` +
+  `The package '@rn-native-utils/workmanager' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
@@ -42,7 +42,7 @@ const isSupported = () => SupportedPlatforms.includes(Platform.OS);
 
 export const schedule = async (
   params: IParams,
-  callback: Task
+  callback: (data: string | Record<string, unknown> | boolean) => Promise<void>
 ): Promise<boolean> => {
   if (!isSupported()) {
     return false;

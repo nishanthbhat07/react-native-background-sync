@@ -1,17 +1,17 @@
-# react-native-background-sync
+# @rn-native-utils/background-sync
 
 A React Native library for performing background data syncs in Android using Android's WorkManager.
 
 ## Installation
 
 ```sh
-npm install react-native-background-sync
+npm install @rn-native-utils/background-sync
 ```
 
 or
 
 ```sh
-yarn add react-native-background-sync
+yarn add @rn-native-utils/background-sync
 ```
 
 ## Supported Platforms
@@ -127,22 +127,22 @@ MINUTES = 'MINUTES',
 
 ## Types
 The BackgroundSchedulerParams type is used to configure the background task. Refer to the library's type definitions for the exact structure and available options.
-```ts
-export interface BackgroundSchedulerParams {
-  taskKey: string;
-  type: SchedulerTypes;
-  maxRetryAttempts?: number;
-  retryDelay?: number;
-  taskTimeout?: number;
-  allowedInForeground?: boolean;
-  syncInterval?: number;
-  syncIntervalType?: TimeUnits;
-  syncFlexTime?: number;
-  syncFlexTimeType?: TimeUnits;
-  workerPolicy?: WorkerPolicy;
-}
+### BackgroundSchedulerParams
 
-```
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| taskKey | string | Yes | Unique identifier for the background task |
+| type | SchedulerTypes | Yes | Type of scheduler (PERIODIC or ONE_TIME) |
+| maxRetryAttempts | number | No | Maximum number of retry attempts if task fails |
+| retryDelay | number | No | Delay between retry attempts in milliseconds |
+| taskTimeout | number | No | Maximum time allowed for task execution |
+| allowedInForeground | boolean | No | Whether task can run while app is in foreground |
+| syncInterval | number | No | Interval between periodic syncs |
+| syncIntervalType | TimeUnits | No | Unit for syncInterval (SECOND, MINUTES, HOUR, DAY) |
+| syncFlexTime | number | No | Flex time window for periodic syncs |
+| syncFlexTimeType | TimeUnits | No | Unit for syncFlexTime |
+| workerPolicy | WorkerPolicy | No | Policy for handling existing workers
+| extras | Record<string, any> | No | Additional data to be passed to the background task |
 
 ## Error Handling
 All functions in this library throw errors if something goes wrong during execution. It's recommended to wrap calls to these functions in try-catch blocks for proper error handling.
