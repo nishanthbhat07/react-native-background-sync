@@ -1,6 +1,6 @@
 {
   "name": "@rn-native-utils/workmanager",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Perform background data syncs in Android using Android's WorkManager",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
