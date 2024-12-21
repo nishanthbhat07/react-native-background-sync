@@ -28,7 +28,7 @@ export interface BackgroundSchedulerParams {
   syncFlexTime?: number;
   syncFlexTimeType?: TimeUnits;
   workerPolicy?: WorkerPolicy;
-  extras: Record<string, unknown>;
+  extras?: Record<string, unknown>;
 }
 
 export function schedule(
